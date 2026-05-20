@@ -1,0 +1,628 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}   % optional, only if you switch to \toprule/\midrule
+\usepackage{float}      % lets [htbp] behave; harmless if unused
+\usepackage{hyperref}   % optional, for clickable refs
+
+\begin{document}
+\section{Post Lab Analysis}
+
+\subsection{Theory}
+
+This experiment uses the isotope shift between hydrogen and deuterium Balmer lines to estimate the proton electron mass ratio. The energy levels of a hydrogen like atom depend on the reduced mass of the electron nucleus system,
+
+\[
+\mu = \frac{m_e m_N}{m_e + m_N}.
+\]
+
+Hydrogen has a proton as its nucleus. Deuterium has a heavier nucleus made from a proton and a neutron. The deuterium reduced mass is therefore slightly larger than the hydrogen reduced mass. Since the transition energy is proportional to the reduced mass, the deuterium transition energy is slightly larger, so the deuterium line appears at a slightly shorter wavelength.
+
+The measured quantity is
+
+\[
+\Delta \lambda = \lambda_{\mathrm{H}} - \lambda_{\mathrm{D}}.
+\]
+
+For corresponding Balmer transitions, the expected relation is
+
+\[
+\Delta \lambda
+\approx
+0.500 \frac{m_e}{m_p} \lambda_{\mathrm{H}}.
+\]
+
+I therefore fit the corrected isotope shifts to
+
+\[
+\Delta \lambda = s \lambda_{\mathrm{H}}.
+\]
+
+The proton electron mass ratio is then
+
+\[
+\frac{m_p}{m_e} = \frac{0.500}{s}.
+\]
+
+The analysis therefore has three parts. First, the monochromator wavelength scale is calibrated with mercury lines. Second, the hydrogen and deuterium peak centers are measured from the mixed lamp spectra. Third, the corrected isotope shifts are fit against the corrected hydrogen wavelengths.
+
+\subsection{Preparation}
+
+All scans were first converted from the second order instrument setting to the real wavelength scale using
+
+\[
+\lambda_{\mathrm{real}} = \frac{\lambda_{\mathrm{instrument}}}{2}.
+\]
+
+The raw data were kept unchanged, and separate real wavelength files were made for fitting. The files were classified as mercury calibration scans, hydrogen only control scans, and hydrogen deuterium mixed lamp scans. I do not include the raw stacked overview plots in the report because they are only bookkeeping checks and are not clear enough to support the final argument. Instead, the report focuses on the fits, residuals, and calibration results.
+
+The CurveFit package was used to make reference plots and appendix reports because it was part of the lab workflow. The main numerical analysis used Mathematica's built in fitting functions. This made it possible to control the fit window, model form, parameter constraints, residuals, and uncertainty propagation directly.
+
+\subsection{Calibration}
+
+The mercury peaks were fit with a Gaussian peak plus a linear background,
+
+\[
+V(\lambda)
+=
+c + d(\lambda - \lambda_0)
++
+A \exp\left[-\frac{(\lambda - \mu)^2}{2\sigma^2}\right].
+\]
+
+The fitted center \(\mu\) was treated as the observed mercury wavelength. The main calibration used the 365.588 nm, 404.770 nm, and 546.226 nm mercury lines. The 365.119 nm region was fit as a diagnostic but was not used as a main calibration point because the 365 nm region contains nearby mercury lines, and the fitted center was not independent of the 365.588 nm fit.
+
+The calibration model was
+
+\[
+\lambda_{\mathrm{true}} = a + b\lambda_{\mathrm{obs}}.
+\]
+
+The fit gave
+
+\[
+a = 0.423 \pm 0.738 \ \mathrm{nm},
+\]
+
+\[
+b = 0.998274 \pm 0.001655.
+\]
+
+The root mean square calibration residual was
+
+\[
+0.129 \ \mathrm{nm},
+\]
+
+and the maximum absolute residual was
+
+\[
+0.173 \ \mathrm{nm}.
+\]
+
+Figure~\ref{fig:hgcal} shows the calibration and residuals. The residuals show that the calibration is not perfect. However, the offset parameter \(a\) cancels in a pair separation. For hydrogen and deuterium peaks measured in the same scan,
+
+\[
+\lambda_{\mathrm{H,corr}} = a + b\mu_{\mathrm{H}},
+\]
+
+\[
+\lambda_{\mathrm{D,corr}} = a + b\mu_{\mathrm{D}},
+\]
+
+so
+
+\[
+\Delta \lambda_{\mathrm{corr}}
+=
+\lambda_{\mathrm{H,corr}} - \lambda_{\mathrm{D,corr}}
+=
+b(\mu_{\mathrm{H}} - \mu_{\mathrm{D}}).
+\]
+
+This means the slope \(b\), not the intercept \(a\), is the calibration quantity that directly changes the isotope shift.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/compact_calibration_figures/Hg_calibration_and_residuals_compact.pdf}
+\caption{Mercury wavelength calibration and residuals. The calibration maps fitted mercury centers to true mercury vacuum wavelengths.}
+\label{fig:hgcal}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Mercury peak fits used to evaluate the wavelength calibration and line width.}
+\label{tab:hgfits}
+\begin{tabular}{lrrrrr}
+\hline
+Line & True nm & Observed nm & Center error nm & Width nm & Used \\
+\hline
+Hg 365.119 diagnostic & 365.119 & 365.662 & 0.00112 & 0.06798 & no \\
+Hg 365.588 & 365.588 & 365.660 & 0.00206 & 0.07343 & yes \\
+Hg 404.770 & 404.770 & 405.219 & 0.00112 & 0.06138 & yes \\
+Hg 546.226 & 546.226 & 546.708 & 0.00079 & 0.06990 & yes \\
+Hg 546 repeat wide & 546.226 & 546.694 & 0.00097 & 0.07592 & no \\
+Hg 546 repeat 20um & 546.226 & 546.680 & 0.00202 & 0.07805 & no \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Resolution}
+
+The fitted mercury widths estimate the instrumental width of a single spectral line. I converted each Gaussian width to a full width using
+
+\[
+\mathrm{FWHM} = 2\sqrt{2\ln2}\sigma.
+\]
+
+The mercury full widths were about \(0.14\) nm to \(0.18\) nm. This is comparable to the expected hydrogen and deuterium separation. Therefore, the hydrogen and deuterium peaks are not completely separated. This is why the final analysis uses peak models rather than simply reading off two maximum positions.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{PHASE1_real_wavelength_files/PHASE3_instrument_resolution/Hg_FWHM_vs_HD_separation_scale.pdf}
+\caption{Instrumental width estimated from mercury fits. The line widths are comparable to the isotope shift scale, so peak overlap matters.}
+\label{fig:widths}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Instrumental width estimates from mercury fits.}
+\label{tab:widths}
+\begin{tabular}{lrrrrr}
+\hline
+Line & True nm & \(\sigma\) nm & FWHM nm & Residual V & Used \\
+\hline
+\input{PHASE1_real_wavelength_files/PHASE3_instrument_resolution/instrument_resolution_table_body.tex}
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Controls}
+
+The hydrogen only spectra were used as controls. The purpose was to see what a single hydrogen line looked like with the same instrument and to identify regions where other spectral features were present. Several hydrogen only lines were well described by a single Gaussian plus a linear background. H epsilon and H zeta were not clean single peak spectra. They showed extra structure that could not be honestly absorbed into a straight background.
+
+Figure~\ref{fig:hcontrol} summarizes the single peak hydrogen only fits. The large residuals for some lines show that not every region of the spectrum is clean.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/hydrogen_only_width_and_residual_summary.pdf}
+\caption{Hydrogen only control fits. Some lines are clean single peaks, while H epsilon and H zeta show extra structure.}
+\label{fig:hcontrol}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Hydrogen only single peak fit results.}
+\label{tab:hcontrol}
+\begin{tabular}{lrrrrr}
+\hline
+Line & Center nm & Center error nm & \(\sigma\) nm & FWHM nm & Residual V \\
+\hline
+\input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/tables_for_latex/hydrogen_only_fit_table_body.tex}
+\hline
+\end{tabular}
+\end{table}
+
+For H epsilon and H zeta, I also tried two Gaussian models. These models showed that the extra structure could be described empirically, but the interpretation was not clean enough to use those lines in the main isotope shift fit. These checks are included in the appendix because they justify excluding H epsilon and H zeta from the main result.
+
+\subsection{Peak Fits}
+
+The main hydrogen deuterium peak model was a two peak Gaussian model with a shared width and a linear background,
+
+\[
+V(\lambda)
+=
+c + d(\lambda - \lambda_0)
++
+A_{\mathrm{D}}\exp\left[-\frac{(\lambda-\mu_{\mathrm{D}})^2}{2\sigma^2}\right]
++
+A_{\mathrm{H}}\exp\left[-\frac{(\lambda-\mu_{\mathrm{H}})^2}{2\sigma^2}\right].
+\]
+
+The shorter wavelength peak was assigned to deuterium, and the longer wavelength peak was assigned to hydrogen. This follows from the reduced mass argument because deuterium has the shorter wavelength.
+
+The observed separation was
+
+\[
+\Delta\lambda_{\mathrm{obs}} = \mu_{\mathrm{H}} - \mu_{\mathrm{D}}.
+\]
+
+The corrected separation was
+
+\[
+\Delta\lambda_{\mathrm{corr}} = b\Delta\lambda_{\mathrm{obs}}.
+\]
+
+The uncertainty was propagated as
+
+\[
+\sigma_{\Delta,\mathrm{corr}}
+=
+\sqrt{
+(b\sigma_{\Delta,\mathrm{obs}})^2
++
+(\Delta\lambda_{\mathrm{obs}}\sigma_b)^2
+}.
+\]
+
+H beta, H gamma, and H delta were fit with constrained shared width models. H alpha needed special treatment. The global two peak fit did not properly model the visible hydrogen peak, so I fit the deuterium and hydrogen peaks in separate local windows. The local H alpha fits are shown in Fig.~\ref{fig:halpha}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.47\textwidth]{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_fit_row.pdf}
+\includegraphics[width=0.47\textwidth]{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_residual_row.pdf}
+\caption{Local H alpha refit. The deuterium peak and hydrogen peak were fit in separate windows because the global two peak model did not fit the right peak well.}
+\label{fig:halpha}
+\end{figure}
+
+The points used in the final physics fit are shown in Table~\ref{tab:fitpoints}. H epsilon and H zeta were excluded from the main fit because the control spectra and mixed lamp spectra showed extra structure in those regions.
+
+\begin{table}[htbp]
+\centering
+\caption{Corrected hydrogen wavelengths and corrected isotope shifts used in the final fit.}
+\label{tab:fitpoints}
+\begin{tabular}{lrrrl}
+\hline
+Line & \(\lambda_{\mathrm{H,corr}}\) nm & \(\Delta\lambda_{\mathrm{corr}}\) nm & Error nm & Source \\
+\hline
+H delta & 410.1280 & 0.10909 & 0.00099 & shared width fit \\
+H gamma & 433.9560 & 0.11155 & 0.00070 & shared width fit \\
+H beta & 485.9120 & 0.13329 & 0.00037 & shared width fit \\
+H alpha & 655.6930 & 0.17726 & 0.00066 & local refit \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Result}
+
+The corrected isotope shifts were fit to
+
+\[
+\Delta\lambda = s\lambda_{\mathrm{H}}.
+\]
+
+The zero intercept form was used as the main result because the theory predicts a proportional relation. The weighted zero intercept fit gave
+
+\[
+s = (2.70628 \pm 0.03167)\times 10^{-4}.
+\]
+
+The uncertainty was scaled by the residual scatter because the point uncertainties were smaller than the scatter of the final fit. The scale factor was
+
+\[
+\sqrt{\chi^2/\nu} = 5.72.
+\]
+
+The resulting proton electron mass ratio was
+
+\[
+\frac{m_p}{m_e}
+=
+1847.6 \pm 21.6.
+\]
+
+The residual root mean square was
+
+\[
+0.00322 \ \mathrm{nm}.
+\]
+
+The maximum absolute residual was
+
+\[
+0.00589 \ \mathrm{nm}.
+\]
+
+Figure~\ref{fig:finalfit} shows the final fit and residuals. The red line is the zero intercept fit used for the main result. The gray dashed line is a free intercept check.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{PHASE1_real_wavelength_files/PHASE6B_final_physics_fit_corrected/figures/corrected_final_isotope_shift_fit_and_residuals_horizontal_narrow.pdf}
+\caption{Final isotope shift fit. The red line is the zero intercept fit used for the main result, and the gray dashed line is the free intercept check.}
+\label{fig:finalfit}
+\end{figure}
+
+The free intercept model was
+
+\[
+\Delta\lambda = q + s\lambda_{\mathrm{H}}.
+\]
+
+It gave
+
+\[
+q = -0.00501 \pm 0.01259 \ \mathrm{nm},
+\]
+
+\[
+s = (2.80386 \pm 0.24790)\times10^{-4},
+\]
+
+and
+
+\[
+\frac{m_p}{m_e} = 1783 \pm 158.
+\]
+
+The intercept is consistent with zero, so the zero intercept model remains reasonable. The free intercept result also agrees within uncertainty, but it is much less precise because it uses only four points with two fitted parameters.
+
+\begin{table}[htbp]
+\centering
+\caption{Final fit summary.}
+\label{tab:summary}
+\begin{tabular}{lr}
+\hline
+Quantity & Value \\
+\hline
+Zero intercept slope & \(2.70628\times10^{-4}\) \\
+Slope error & \(0.03167\times10^{-4}\) \\
+\(m_p/m_e\) & \(1847.6\) \\
+Error in \(m_p/m_e\) & \(21.6\) \\
+Residual RMS & \(0.00322\) nm \\
+Free intercept & \(-0.00501 \pm 0.01259\) nm \\
+Free fit \(m_p/m_e\) & \(1783 \pm 158\) \\
+\hline
+\end{tabular}
+\end{table}
+
+I also did a leave one out check. In each case, one line was removed and the zero intercept fit was repeated. The values are shown in Table~\ref{tab:loo}. No single line completely controls the result.
+
+\begin{table}[htbp]
+\centering
+\caption{Leave one out sensitivity for the zero intercept fit.}
+\label{tab:loo}
+\begin{tabular}{lrr}
+\hline
+Excluded line & \(m_p/m_e\) & Error \\
+\hline
+H delta & 1845.8 & 26.6 \\
+H gamma & 1835.2 & 11.7 \\
+H beta & 1876.0 & 28.1 \\
+H alpha & 1846.7 & 31.6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Derived Values}
+
+Using the measured mass ratio and the electron rest energy \(0.511\) MeV, the proton rest energy is
+
+\[
+m_p c^2 = 1847.6(0.511 \ \mathrm{MeV})
+=
+944.1 \pm 11.0 \ \mathrm{MeV}.
+\]
+
+Using \(m_e = 9.109\times10^{-31}\) kg, the hydrogen atom mass is approximately
+
+\[
+m_{\mathrm{H}}
+\approx
+(m_p/m_e + 1)m_e
+=
+1.684\times10^{-27} \ \mathrm{kg}.
+\]
+
+A hydrogen molecule has two hydrogen atoms, so a mole of hydrogen gas with mass \(2\) g gives
+
+\[
+N_A
+=
+\frac{0.002 \ \mathrm{kg}}{2m_{\mathrm{H}}}
+=
+5.94\times10^{23}.
+\]
+
+Propagating the uncertainty from the mass ratio gives
+
+\[
+N_A = (5.94 \pm 0.07)\times10^{23}.
+\]
+
+This is close to the accepted scale of Avogadro's number. This calculation is not as direct as a chemistry measurement, but it is a useful check that the spectroscopic result gives the right atomic mass scale.
+
+\subsection{Discussion}
+
+The final result,
+
+\[
+m_p/m_e = 1847.6 \pm 21.6,
+\]
+
+is close to the expected value near \(1836\). The result is reasonable because the isotope shifts increase with hydrogen wavelength, the free intercept is consistent with zero, and the leave one out fits stay close to the same mass ratio.
+
+The main difficulty is that the isotope shifts are small compared with the observed line widths. The mercury fits showed that a single line has a full width of roughly \(0.14\) nm to \(0.18\) nm. The hydrogen and deuterium separations are of the same size or smaller. This makes the result sensitive to line shape and fit window choices.
+
+The calibration was good enough for the separation measurement because the intercept cancels in a pair separation. The slope uncertainty was still propagated into the isotope shift. The calibration residuals were larger than the formal center errors from individual Gaussian fits, which means the formal fit errors alone are too optimistic.
+
+The hydrogen only controls were also important. They showed that H epsilon and H zeta are not clean single peak regions. Those lines were therefore excluded from the main fit. This was not an arbitrary choice. It was based on the control scans and on the visible structure in the mixed lamp spectra.
+
+H alpha required a separate local refit. The global two peak model did not fit the visible hydrogen peak properly, but local fits to the deuterium and hydrogen peaks gave a usable separation. This is a good example of why the analysis could not be done by applying the same automatic model to every line without checking the plots.
+
+The largest remaining limitation is model dependence. The next improvement would be to repeat the final analysis with several reasonable fit windows and peak width assumptions, then use the spread in \(m_p/m_e\) as a systematic uncertainty. Another useful check would be to add synthetic deuterium peaks to hydrogen only spectra and test whether the fitting method recovers the known separation.
+
+\subsection{Conclusion}
+
+The Balmer isotope shift was measured from hydrogen deuterium spectra and used to estimate the proton electron mass ratio. After mercury calibration, hydrogen only control checks, constrained two peak fits, and a local H alpha refit, the final result was
+
+\[
+m_p/m_e = 1847.6 \pm 21.6.
+\]
+
+This agrees with the expected scale of the proton electron mass ratio. The analysis shows that the main source of uncertainty is not the final line fit alone, but the combination of calibration residuals, overlapping peaks, contaminated spectral regions, and model choice.
+
+\clearpage
+\appendix
+
+\section{Appendix}
+
+\subsection{Mercury Fits}
+
+This appendix contains the mercury fit figures from the native Mathematica analysis. These figures support the calibration values and the instrumental width estimate.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_365p119_diagnostic_fit_residual_clean.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_365p588_fit_residual_clean.pdf}
+\caption{Mercury fits near 365 nm. The first is diagnostic only, and the second was used for calibration.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_404p770_fit_residual_clean.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_546p226_fit_residual_clean.pdf}
+\caption{Mercury fits for 404.770 nm and 546.226 nm used in the calibration.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_546_repeat_wide_fit_residual_clean.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE2_Hg_calibration_native_clean/fit_figures_no_tables/Hg_546_repeat_20um_fit_residual_clean.pdf}
+\caption{Repeated 546 nm mercury fits used as repeatability checks. These were not used as independent calibration lines.}
+\end{figure}
+
+\subsection{Control Fits}
+
+The hydrogen only fits were used to identify which spectral regions were clean and which were contaminated by extra structure.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_alpha_hydrogen_only_fit_residual.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_beta_hydrogen_only_fit_residual.pdf}
+\caption{Hydrogen only control fits for H alpha and H beta.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_gamma_hydrogen_only_fit_residual.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_delta_hydrogen_only_fit_residual.pdf}
+\caption{Hydrogen only control fits for H gamma and H delta.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_epsilon_hydrogen_only_fit_residual.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/fit_figures_no_tables/H_zeta_hydrogen_only_fit_residual.pdf}
+\caption{Hydrogen only control fits for H epsilon and H zeta. These regions showed extra structure and were not used in the main fit.}
+\end{figure}
+
+\subsection{Extra Models}
+
+Two Gaussian checks were performed for H epsilon and H zeta because the single peak control fits showed extra structure. These checks were diagnostic and were not included in the main mass ratio fit.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/fit_figures/H_epsilon_two_gaussian_shared_width.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/fit_figures/H_epsilon_two_gaussian_independent_widths.pdf}
+\caption{Two Gaussian diagnostic fits for H epsilon.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/fit_figures/H_zeta_two_gaussian_shared_width.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/fit_figures/H_zeta_two_gaussian_independent_widths.pdf}
+\caption{Two Gaussian diagnostic fits for H zeta.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Two Gaussian diagnostic model comparison for H epsilon and H zeta.}
+\begin{tabular}{llrrrrrrr}
+\hline
+Line & Model & \(\mu_H\) & \(\mu_I\) & \(\sigma_H\) & \(\sigma_I\) & RMS & AIC & BIC \\
+\hline
+\input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/tables/H_epsilon_zeta_two_gaussian_table_body.tex}
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Mixed Fits}
+
+The first automatic mixed lamp fit was useful for diagnosing failures, but not all of its outputs were used. The final analysis used the fast bounded fits for H beta, H gamma, and H delta, plus the local H alpha refit.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/fit_figures_no_tables/H_beta_fast_bounded_HD_fit.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/fit_figures_no_tables/H_gamma_fast_bounded_HD_fit.pdf}
+\caption{Fast bounded hydrogen deuterium fits for H beta and H gamma.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/fit_figures_no_tables/H_delta_fast_bounded_HD_fit.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/fit_figures_no_tables/H_alpha_fast_bounded_HD_fit.pdf}
+\caption{Fast bounded fits for H delta and H alpha. The H alpha fit is shown here to document why a local refit was used instead.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_2x2_collage.pdf}
+\caption{Compact local H alpha refit summary.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Fast bounded hydrogen deuterium fit table. H alpha was replaced by the local refit in the final result.}
+\begin{tabular}{lrrrrrrr}
+\hline
+Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error & RMS \\
+\hline
+\input{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/tables_for_latex/fast_bounded_actual_HD_fit_table_body.tex}
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Local H alpha refit table.}
+\begin{tabular}{lrrrrrr}
+\hline
+Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error \\
+\hline
+\input{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_table_body.tex}
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Fit Checks}
+
+The first automatic hydrogen deuterium fits are shown here as diagnostic checks. These figures are not all used in the final physics result, but they document why the analysis moved to bounded fits and a local H alpha refit.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_alpha_actual_HD_two_peak_fit.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_beta_actual_HD_two_peak_fit.pdf}
+\caption{Initial automatic mixed lamp fits for H alpha and H beta.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_gamma_actual_HD_two_peak_fit.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_delta_actual_HD_two_peak_fit.pdf}
+\caption{Initial automatic mixed lamp fits for H gamma and H delta.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_epsilon_actual_HD_two_peak_fit.pdf}
+\includegraphics[width=0.48\textwidth]{PHASE1_real_wavelength_files/PHASE5_actual_HD_two_peak_fits/fit_figures_no_tables/H_zeta_actual_HD_two_peak_fit.pdf}
+\caption{Initial automatic mixed lamp fits for H epsilon and H zeta. These were treated as diagnostics only.}
+\end{figure}
+
+\subsection{CurveFit Checks}
+
+CurveFit reports were kept in the final PDF as appendix material because CurveFit was part of the lab workflow. The final numerical results still come from the Mathematica fits in the main analysis.
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 365.119}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p119_GaussianLFit_appendix.pdf}
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 365.588}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p588_GaussianLFit_appendix.pdf}
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 404.770}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_404p770_GaussianLFit_appendix.pdf}
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 546.226}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546p226_GaussianLFit_appendix.pdf}
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit Repeat Wide}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_wide_scan_appendix.pdf}
+
+\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit Repeat 20um}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_20um_slit_appendix.pdf}
+\end{document}
