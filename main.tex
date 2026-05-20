@@ -7,18 +7,6 @@
 \usepackage{hyperref}   % optional, for clickable refs
 \usepackage{pdfpages}   % needed for \includepdf in the CurveFit appendix
 
-% Helper for \input-ing pre-generated table-body files inside tabular.
-% Disables _ as math subscript (so labels like "two_gaussian_shared_width"
-% render as text) and suppresses the trailing-newline space that would
-% otherwise push a following \hline into a cell.
-\newcommand{\inputtablerows}[1]{%
-  \begingroup
-  \catcode`\_=12\relax
-  \endlinechar=-1\relax
-  \input{#1}%
-  \endgroup
-}
-
 \begin{document}
 \section{Post Lab Analysis}
 
@@ -186,7 +174,7 @@ The mercury full widths were about \(0.14\) nm to \(0.18\) nm. This is comparabl
 \hline
 Line & True nm & \(\sigma\) nm & FWHM nm & Residual V & Used \\
 \hline
-\inputtablerows{PHASE1_real_wavelength_files/PHASE3_instrument_resolution/instrument_resolution_table_body.tex}
+\input{PHASE1_real_wavelength_files/PHASE3_instrument_resolution/instrument_resolution_table_body.tex}
 \hline
 \end{tabular}
 \end{table}
@@ -212,7 +200,7 @@ Figure~\ref{fig:hcontrol} summarizes the single peak hydrogen only fits. The lar
 \hline
 Line & Center nm & Center error nm & \(\sigma\) nm & FWHM nm & Residual V \\
 \hline
-\inputtablerows{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/tables_for_latex/hydrogen_only_fit_table_body.tex}
+\input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/tables_for_latex/hydrogen_only_fit_table_body.tex}
 \hline
 \end{tabular}
 \end{table}
@@ -545,7 +533,7 @@ Two Gaussian checks were performed for H epsilon and H zeta because the single p
 \hline
 Line & Model & \(\mu_H\) & \(\mu_I\) & \(\sigma_H\) & \(\sigma_I\) & RMS & AIC & BIC \\
 \hline
-\inputtablerows{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/tables/H_epsilon_zeta_two_gaussian_table_body.tex}
+\input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/tables/H_epsilon_zeta_two_gaussian_table_body.tex}
 \hline
 \end{tabular}
 \end{table}
@@ -581,7 +569,7 @@ The first automatic mixed lamp fit was useful for diagnosing failures, but not a
 \hline
 Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error & RMS \\
 \hline
-\inputtablerows{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/tables_for_latex/fast_bounded_actual_HD_fit_table_body.tex}
+\input{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/tables_for_latex/fast_bounded_actual_HD_fit_table_body.tex}
 \hline
 \end{tabular}
 \end{table}
@@ -593,7 +581,7 @@ Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lamb
 \hline
 Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error \\
 \hline
-\inputtablerows{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_table_body.tex}
+\input{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_table_body.tex}
 \hline
 \end{tabular}
 \end{table}
