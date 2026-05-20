@@ -5,9 +5,14 @@
 \usepackage{booktabs}   % optional, only if you switch to \toprule/\midrule
 \usepackage{float}      % lets [htbp] behave; harmless if unused
 \usepackage{hyperref}   % optional, for clickable refs
-\usepackage{pdfpages}   % needed for \includepdf in the CurveFit appendix
+
+\title{Experiment 25}
+\author{Ansh Tiwari}
+\date{\today}
 
 \begin{document}
+\maketitle
+
 \section{Post Lab Analysis}
 
 \subsection{Theory}
@@ -175,7 +180,6 @@ The mercury full widths were about \(0.14\) nm to \(0.18\) nm. This is comparabl
 Line & True nm & \(\sigma\) nm & FWHM nm & Residual V & Used \\
 \hline
 \input{PHASE1_real_wavelength_files/PHASE3_instrument_resolution/instrument_resolution_table_body.tex}
-\hline
 \end{tabular}
 \end{table}
 
@@ -188,7 +192,7 @@ Figure~\ref{fig:hcontrol} summarizes the single peak hydrogen only fits. The lar
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.62\textwidth]{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/hydrogen_only_width_and_residual_summary.pdf}
-\caption{Hydrogen only control fits. Some lines are clean single peaks, while H epsilon and H zeta show extra structure.}
+\caption{Hydrogen only single peak fit summary. Left: fitted Gaussian FWHM versus line center. Right: single peak RMS residual versus line center. H epsilon and H zeta have larger residuals because of extra structure in those regions.}
 \label{fig:hcontrol}
 \end{figure}
 
@@ -201,7 +205,6 @@ Figure~\ref{fig:hcontrol} summarizes the single peak hydrogen only fits. The lar
 Line & Center nm & Center error nm & \(\sigma\) nm & FWHM nm & Residual V \\
 \hline
 \input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_control/tables_for_latex/hydrogen_only_fit_table_body.tex}
-\hline
 \end{tabular}
 \end{table}
 
@@ -529,13 +532,14 @@ Two Gaussian checks were performed for H epsilon and H zeta because the single p
 \begin{table}[H]
 \centering
 \caption{Two Gaussian diagnostic model comparison for H epsilon and H zeta.}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrrr}
 \hline
 Line & Model & \(\mu_H\) & \(\mu_I\) & \(\sigma_H\) & \(\sigma_I\) & RMS & AIC & BIC \\
 \hline
 \input{PHASE1_real_wavelength_files/PHASE4_Hydrogen_only_two_gaussian_checks/tables/H_epsilon_zeta_two_gaussian_table_body.tex}
-\hline
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \subsection{Mixed Fits}
@@ -570,7 +574,6 @@ The first automatic mixed lamp fit was useful for diagnosing failures, but not a
 Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error & RMS \\
 \hline
 \input{PHASE1_real_wavelength_files/PHASE5C_actual_HD_fast_bounded_refit/tables_for_latex/fast_bounded_actual_HD_fit_table_body.tex}
-\hline
 \end{tabular}
 \end{table}
 
@@ -582,7 +585,6 @@ Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lamb
 Line & \(\mu_D\) & \(\mu_H\) & \(\Delta\lambda\) & \(\lambda_H\) & \(\Delta\lambda_c\) & Error \\
 \hline
 \input{PHASE1_real_wavelength_files/PHASE5D_H_alpha_local_refit/H_alpha_local_refit_table_body.tex}
-\hline
 \end{tabular}
 \end{table}
 
@@ -615,15 +617,39 @@ The first automatic hydrogen deuterium fits are shown here as diagnostic checks.
 
 CurveFit reports were kept in the final PDF as appendix material because CurveFit was part of the lab workflow. The final numerical results still come from the Mathematica fits in the main analysis.
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 365.119}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p119_GaussianLFit_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p119_GaussianLFit_appendix.pdf}
+\caption{CurveFit Gaussian plus linear fit, 365.119 nm Hg line.}
+\end{figure}
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 365.588}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p588_GaussianLFit_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_365p588_GaussianLFit_appendix.pdf}
+\caption{CurveFit Gaussian plus linear fit, 365.588 nm Hg line.}
+\end{figure}
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 404.770}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_404p770_GaussianLFit_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_404p770_GaussianLFit_appendix.pdf}
+\caption{CurveFit Gaussian plus linear fit, 404.770 nm Hg line.}
+\end{figure}
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit 546.226}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546p226_GaussianLFit_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546p226_GaussianLFit_appendix.pdf}
+\caption{CurveFit Gaussian plus linear fit, 546.226 nm Hg line.}
+\end{figure}
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit Repeat Wide}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_wide_scan_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_wide_scan_appendix.pdf}
+\caption{CurveFit repeat scan at 546 nm, wide slit configuration.}
+\end{figure}
 
-\includepdf[pages={1},scale=0.85,pagecommand={\subsection*{CurveFit Repeat 20um}}]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_20um_slit_appendix.pdf}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{CurveFit_appendix/Hg_calibration_fit_reports/CF_Hg_546_repeat_20um_slit_appendix.pdf}
+\caption{CurveFit repeat scan at 546 nm, 20 um slit configuration.}
+\end{figure}
 \end{document}
