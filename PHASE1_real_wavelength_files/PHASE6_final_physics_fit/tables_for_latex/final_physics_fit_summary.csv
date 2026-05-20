@@ -1,0 +1,16 @@
+"quantity","value"
+"weighted_fit_used","True"
+"zero_intercept_slope",-0.005013652074972193
+"zero_intercept_slope_SE",0.012591900013327668
+"mp_over_me_zero_intercept",-99.72770198713343
+"mp_over_me_zero_intercept_SE",250.46836780908617
+"zero_intercept_RMS_residual_nm",0.0029013310515413142
+"zero_intercept_max_residual_nm",0.005115392141243624
+"free_intercept_q_nm",-0.005013652074972193
+"free_intercept_q_SE_nm",0.012591900013327668
+"free_intercept_slope",0.00028038567093487777
+"free_intercept_slope_SE",0.000024790051877074666
+"mp_over_me_free_intercept",1783.25803288332
+"mp_over_me_free_intercept_SE",157.66518666232102
+"free_intercept_RMS_residual_nm",0.0029013310515413142
+"free_intercept_max_residual_nm",0.005115392141243624
